@@ -8,14 +8,23 @@ namespace _game.Scripts.GridComponents
     public class GridCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private RectTransform m_rectTransform;
+        [SerializeField] private Image m_image;
         [SerializeField, ReadOnly] private Vector2 m_cord;
 
+        private GridCellEvents _gridCellEvents;
+
         [Button]
-        public void Initialize(Vector2 cord, Vector2 localPosition)
+        public void Initialize(Vector2 cord, Vector2 localPosition, GridCellEvents gridCellEvents)
         {
             m_cord = cord;
-            name = $"x_{m_cord.x}_y_{m_cord.y}";
+            name = GetIndex((int)cord.x, (int)cord.y);
             m_rectTransform.anchoredPosition = localPosition;
+            _gridCellEvents = gridCellEvents;
+        }
+
+        public static string GetIndex(int x, int y)
+        {
+            return $"x_{x}_y_{y}";
         }
 
         [Button]
@@ -29,15 +38,25 @@ namespace _game.Scripts.GridComponents
         {
             return name;
         }
-        
+
+        public Vector2 GetCord()
+        {
+            return m_cord;
+        }
+
+        public void SetColor(Color color)
+        {
+            m_image.color = color;
+        }
+
         public void OnPointerEnter(PointerEventData eventData)
         {
-            GetComponent<Image>().color = Color.green;
+            _gridCellEvents.OnCellEnter?.Invoke(this);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            GetComponent<Image>().color = Color.white;
+            _gridCellEvents.OnCellExit?.Invoke(this);
         }
     }
 }

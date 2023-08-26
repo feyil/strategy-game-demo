@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace _game.Scripts.GridComponents
 {
@@ -44,7 +45,11 @@ namespace _game.Scripts.GridComponents
                     var localPosition = new Vector2(currentColumn * cellWidth,
                         -currentRow * cellHeight);
 
-                    gridCell.Initialize(cord, localPosition);
+                    gridCell.Initialize(cord, localPosition, new GridCellEvents()
+                    {
+                        OnCellEnter = OnCellEnter,
+                        OnCellExit = OnCellExit
+                    });
 
                     var index = gridCell.GetIndex();
                     _currentGrid.Add(index, gridCell);
@@ -60,6 +65,44 @@ namespace _game.Scripts.GridComponents
             {
                 if (Application.isPlaying) Destroy(value.gameObject);
                 else DestroyImmediate(value.gameObject);
+            }
+        }
+
+        private void OnCellEnter(GridCell gridCell)
+        {
+            var startCord = gridCell.GetCord();
+            var selectionSize = new Vector2(4, 4);
+
+            ColorARegion(startCord, selectionSize, Color.green);
+        }
+
+        private void OnCellExit(GridCell gridCell)
+        {
+            var startCord = gridCell.GetCord();
+            var selectionSize = new Vector2(4, 4);
+
+            ColorARegion(startCord, selectionSize, Color.white);
+        }
+
+        private GridCell GetCell(float x, float y)
+        {
+            var index = GridCell.GetIndex((int)x, (int)y);
+            _currentGrid.TryGetValue(index, out var cell);
+
+            return cell;
+        }
+
+        private void ColorARegion(Vector2 startCord, Vector2 selectionSize, Color color)
+        {
+            for (var i = 0; i < selectionSize.x; i++)
+            {
+                var shiftX = startCord.x + i;
+                for (var j = 0; j < selectionSize.y; j++)
+                {
+                    var shiftY = startCord.y + j;
+                    var cell = GetCell(shiftX, shiftY);
+                    cell.SetColor(color);
+                }
             }
         }
     }
