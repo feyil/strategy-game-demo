@@ -1,9 +1,11 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace _game.Scripts.GridComponents
 {
-    public class GridCell : MonoBehaviour
+    public class GridCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private RectTransform m_rectTransform;
         [SerializeField, ReadOnly] private Vector2 m_cord;
@@ -26,6 +28,16 @@ namespace _game.Scripts.GridComponents
         public string GetIndex()
         {
             return name;
+        }
+        
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            GetComponent<Image>().color = Color.green;
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            GetComponent<Image>().color = Color.white;
         }
     }
 }

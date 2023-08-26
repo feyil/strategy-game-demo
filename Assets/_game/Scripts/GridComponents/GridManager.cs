@@ -15,6 +15,7 @@ namespace _game.Scripts.GridComponents
         [Button]
         public void SpawnGrid()
         {
+            CleanUp();
             SpawnGrid(m_container);
         }
 
@@ -54,6 +55,7 @@ namespace _game.Scripts.GridComponents
         [Button]
         public void CleanUp()
         {
+            if (_currentGrid == null) return;
             foreach (var value in _currentGrid.Values)
             {
                 if (Application.isPlaying) Destroy(value.gameObject);
