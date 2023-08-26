@@ -73,7 +73,16 @@ namespace _game.Scripts.GridComponents
             var startCord = gridCell.GetCord();
             var selectionSize = new Vector2(4, 4);
 
-            ColorARegion(startCord, selectionSize, Color.green);
+            var regionCells = GetRegionCells(startCord, selectionSize);
+            var isAvailable = IsAvailable(regionCells);
+            if (isAvailable)
+            {
+                ColorARegion(regionCells, Color.green);
+            }
+            else
+            {
+                ColorARegion(regionCells, Color.red);
+            }
         }
 
         private void OnCellExit(GridCell gridCell)
@@ -81,7 +90,8 @@ namespace _game.Scripts.GridComponents
             var startCord = gridCell.GetCord();
             var selectionSize = new Vector2(4, 4);
 
-            ColorARegion(startCord, selectionSize, Color.white);
+            var regionCells = GetRegionCells(startCord, selectionSize);
+            ColorARegion(regionCells, Color.white);
         }
 
         private GridCell GetCell(float x, float y)
@@ -92,8 +102,11 @@ namespace _game.Scripts.GridComponents
             return cell;
         }
 
-        private void ColorARegion(Vector2 startCord, Vector2 selectionSize, Color color)
+        private GridCell[] GetRegionCells(Vector2 startCord, Vector2 selectionSize)
         {
+            var regionCells = new GridCell[(int)(selectionSize.x * selectionSize.y)];
+
+            var counter = 0;
             for (var i = 0; i < selectionSize.x; i++)
             {
                 var shiftX = startCord.x + i;
@@ -101,9 +114,35 @@ namespace _game.Scripts.GridComponents
                 {
                     var shiftY = startCord.y + j;
                     var cell = GetCell(shiftX, shiftY);
-                    cell.SetColor(color);
+                    regionCells[counter] = cell;
+                    counter++;
                 }
             }
+
+            return regionCells;
+        }
+
+        private void ColorARegion(GridCell[] regionCells, Color color)
+        {
+            foreach (var regionCell in regionCells)
+            {
+                if(regionCell == null) continue;
+                regionCell.SetColor(color);
+            }
+        }
+
+        private bool IsAvailable(GridCell[] regionCells)
+        {
+            foreach (var regionCell in regionCells)
+            {
+                var isOutsideRangeOrFilled = regionCell == null || regionCell.IsFilled();
+                if (isOutsideRangeOrFilled)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

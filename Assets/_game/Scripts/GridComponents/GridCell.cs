@@ -12,6 +12,7 @@ namespace _game.Scripts.GridComponents
         [SerializeField, ReadOnly] private Vector2 m_cord;
 
         private GridCellEvents _gridCellEvents;
+        private bool _isFilled;
 
         [Button]
         public void Initialize(Vector2 cord, Vector2 localPosition, GridCellEvents gridCellEvents)
@@ -42,6 +43,16 @@ namespace _game.Scripts.GridComponents
         public Vector2 GetCord()
         {
             return m_cord;
+        }
+
+        public bool IsFilled()
+        {
+            return _isFilled;
+        }
+
+        public void Fill()
+        {
+            _isFilled = true;
         }
 
         public void SetColor(Color color)
