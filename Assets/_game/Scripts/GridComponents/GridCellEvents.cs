@@ -7,5 +7,6 @@ namespace _game.Scripts.GridComponents
     {
         public Action<GridCell> OnCellEnter;
         public Action<GridCell> OnCellExit;
+        public Action<GridCell> OnCellClick;
     }
 }

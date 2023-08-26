@@ -7,6 +7,8 @@ namespace _game.Scripts.GridComponents
 {
     public class GridManager : MonoBehaviour
     {
+        [SerializeField] private Vector2 m_selectionSize;
+
         [SerializeField] private RectTransform m_container;
         [SerializeField] private Vector2 m_spacing;
         [SerializeField] private GridCell m_gridCellPrefab;
@@ -48,7 +50,8 @@ namespace _game.Scripts.GridComponents
                     gridCell.Initialize(cord, localPosition, new GridCellEvents()
                     {
                         OnCellEnter = OnCellEnter,
-                        OnCellExit = OnCellExit
+                        OnCellExit = OnCellExit,
+                        OnCellClick = OnCellClick
                     });
 
                     var index = gridCell.GetIndex();
@@ -71,9 +74,8 @@ namespace _game.Scripts.GridComponents
         private void OnCellEnter(GridCell gridCell)
         {
             var startCord = gridCell.GetCord();
-            var selectionSize = new Vector2(4, 4);
 
-            var regionCells = GetRegionCells(startCord, selectionSize);
+            var regionCells = GetRegionCells(startCord, m_selectionSize);
             var isAvailable = IsAvailable(regionCells);
             if (isAvailable)
             {
@@ -88,10 +90,29 @@ namespace _game.Scripts.GridComponents
         private void OnCellExit(GridCell gridCell)
         {
             var startCord = gridCell.GetCord();
-            var selectionSize = new Vector2(4, 4);
 
-            var regionCells = GetRegionCells(startCord, selectionSize);
+            var regionCells = GetRegionCells(startCord, m_selectionSize);
             ColorARegion(regionCells, Color.white);
+        }
+
+        private void OnCellClick(GridCell gridCell)
+        {
+            var startCord = gridCell.GetCord();
+
+            var regionCells = GetRegionCells(startCord, m_selectionSize);
+            var isAvailable = IsAvailable(regionCells);
+            if (isAvailable)
+            {
+                PlaceObject(regionCells);
+            }
+        }
+
+        private void PlaceObject(GridCell[] regionCells)
+        {
+            foreach (var regionCell in regionCells)
+            {
+                regionCell.Fill();
+            }
         }
 
         private GridCell GetCell(float x, float y)
@@ -126,7 +147,7 @@ namespace _game.Scripts.GridComponents
         {
             foreach (var regionCell in regionCells)
             {
-                if(regionCell == null) continue;
+                if (regionCell == null || regionCell.IsFilled()) continue;
                 regionCell.SetColor(color);
             }
         }

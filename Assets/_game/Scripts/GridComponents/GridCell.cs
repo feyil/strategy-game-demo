@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace _game.Scripts.GridComponents
 {
-    public class GridCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class GridCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         [SerializeField] private RectTransform m_rectTransform;
         [SerializeField] private Image m_image;
@@ -53,6 +53,7 @@ namespace _game.Scripts.GridComponents
         public void Fill()
         {
             _isFilled = true;
+            SetColor(Color.blue);
         }
 
         public void SetColor(Color color)
@@ -68,6 +69,11 @@ namespace _game.Scripts.GridComponents
         public void OnPointerExit(PointerEventData eventData)
         {
             _gridCellEvents.OnCellExit?.Invoke(this);
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            _gridCellEvents.OnCellClick?.Invoke(this);
         }
     }
 }
