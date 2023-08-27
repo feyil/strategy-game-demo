@@ -6,11 +6,14 @@ using _game.Scripts.Interfaces;
 using _game.Scripts.ProductionObjects;
 using _game.Scripts.UI.ProductionMenu;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace _game.Scripts.UI.UiControllers
 {
     public class GameUiController : UiController
     {
+        [SerializeField] private Button m_restartButton;
+        [SerializeField] private Button m_exitButton;
         [SerializeField] private GridManager m_gridManager;
         [SerializeField] private ProductionPaneController m_productionPaneController;
         [SerializeField] private InformationPaneController m_informationPaneController;
@@ -20,6 +23,18 @@ namespace _game.Scripts.UI.UiControllers
 
         public void Show(List<ICustomScrollerData> scrollData)
         {
+            m_restartButton.onClick.RemoveAllListeners();
+            m_restartButton.onClick.AddListener(() =>
+            {
+                GameManager.Instance.RestartGame();
+            });
+            
+            m_exitButton.onClick.RemoveAllListeners();
+            m_exitButton.onClick.AddListener(() =>
+            {
+                GameManager.Instance.ExitGame();
+            });
+
             _scrollData = scrollData;
             Refresh();
 

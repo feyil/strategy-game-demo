@@ -4,6 +4,7 @@ using _game.Packages.CustomScroller;
 using _game.Scripts.Data;
 using _game.Scripts.UI.ProductionMenu;
 using _game.Scripts.UI.UiControllers;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -43,8 +44,10 @@ namespace _game.Scripts.Core
         }
 
         [Button]
-        private void RestartGame()
+        public void RestartGame()
         {
+            DOTween.CompleteAll();
+            StopAllCoroutines();
             UiManager.Get<GameUiController>().Refresh();
         }
 
@@ -62,6 +65,11 @@ namespace _game.Scripts.Core
             }
 
             return scrollData;
+        }
+
+        public void ExitGame()
+        {
+            Application.Quit();
         }
     }
 }
