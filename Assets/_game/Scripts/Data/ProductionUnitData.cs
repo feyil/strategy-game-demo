@@ -12,5 +12,6 @@ namespace _game.Scripts.Data
         public Vector2 Dimension;
         public int Damage;
         public int Health;
+        public Color Color;
     }
 }

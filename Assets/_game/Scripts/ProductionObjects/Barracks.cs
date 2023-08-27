@@ -51,11 +51,12 @@ namespace _game.Scripts.ProductionObjects
             if (spawnCells.Count == 0) return;
 
             var cell = spawnCells[Random.Range(0, spawnCells.Count)];
+            var soliderTypeIndex = Random.Range(0, _productionData.ProductionUnitDataArray.Length);
+            var soldierType = _productionData.ProductionUnitDataArray[soliderTypeIndex];
             var soldier =
-                new Soldier(
-                    _productionData.ProductionUnitDataArray[
-                        Random.Range(0, _productionData.ProductionUnitDataArray.Length)], cell);
-            cell.FillSpecific(soldier, Color.magenta);
+                new Soldier(soldierType
+                    , cell);
+            cell.FillSpecific(soldier, soldierType.Color);
         }
     }
 }

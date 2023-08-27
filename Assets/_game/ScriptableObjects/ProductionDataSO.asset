@@ -25,18 +25,21 @@ MonoBehaviour:
       Dimension: {x: 1, y: 1}
       Damage: 10
       Health: 10
+      Color: {r: 0.9427507, g: 1, b: 0, a: 1}
     - Id: soldier_2
       Name: Soldier 2
       Image: {fileID: 21300000, guid: 05ffb94fe6e9d47b0afa13b78460fe20, type: 3}
       Dimension: {x: 1, y: 1}
       Damage: 5
       Health: 10
+      Color: {r: 1, g: 0.6076495, b: 0, a: 1}
     - Id: soldier_3
       Name: Soldier 3
       Image: {fileID: 21300000, guid: 370fda87f676d428b98ae08abb45b161, type: 3}
       Dimension: {x: 1, y: 1}
       Damage: 2
       Health: 10
+      Color: {r: 1, g: 0.29396665, b: 0, a: 1}
   - Id: power_plant
     Name: Power Plant
     Image: {fileID: 21300000, guid: 1e5e160387c254f07add0c558255e58a, type: 3}
