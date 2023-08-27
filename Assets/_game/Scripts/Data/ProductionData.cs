@@ -6,6 +6,7 @@ namespace _game.Scripts.Data
     [Serializable]
     public class ProductionData
     {
+        public string Id;
         public string Name;
         public Sprite Image;
         public Vector2 Dimension;

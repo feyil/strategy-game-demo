@@ -1,3 +1,4 @@
+using _game.Scripts.Interfaces;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,7 +13,7 @@ namespace _game.Scripts.GridComponents
         [SerializeField, ReadOnly] private Vector2 m_cord;
 
         private GridCellEvents _gridCellEvents;
-        private bool _isFilled;
+        private IGridObject _gridObject;
 
         [Button]
         public void Initialize(Vector2 cord, Vector2 localPosition, GridCellEvents gridCellEvents)
@@ -47,12 +48,12 @@ namespace _game.Scripts.GridComponents
 
         public bool IsFilled()
         {
-            return _isFilled;
+            return _gridObject != null;
         }
 
-        public void Fill()
+        public void Fill(IGridObject gridObject)
         {
-            _isFilled = true;
+            _gridObject = gridObject;
             SetColor(Color.blue);
         }
 
@@ -73,7 +74,15 @@ namespace _game.Scripts.GridComponents
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            _gridCellEvents.OnCellClick?.Invoke(this);
+            if (eventData.button == PointerEventData.InputButton.Left)
+            {
+                _gridCellEvents.OnCellClick?.Invoke(this);    
+            }
+        }
+
+        public IGridObject GetGridObject()
+        {
+            return _gridObject;
         }
     }
 }

@@ -1,7 +1,9 @@
 using System;
 using _game.Packages.CustomScroller;
 using _game.Scripts.Data;
-using _game.Scripts.UI.UiControllers;
+using _game.Scripts.GridComponents;
+using _game.Scripts.Interfaces;
+using _game.Scripts.ProductionObjects;
 using UnityEngine;
 
 namespace _game.Scripts.UI.ProductionMenu
@@ -41,9 +43,17 @@ namespace _game.Scripts.UI.ProductionMenu
             return ProductionData.Dimension;
         }
 
-        public void PlaceObject()
+        public IGridObject CreateGridObject(GridCell[] regionCells)
         {
-            
+            switch (ProductionData.Id)
+            {
+                case "barracks":
+                    return new Barracks(ProductionData, regionCells);
+                case "power_plant":
+                    return new PowerPlant(ProductionData, regionCells);
+            }
+
+            return null;
         }
     }
 }

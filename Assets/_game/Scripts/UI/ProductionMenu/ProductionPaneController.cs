@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using _game.Packages.CustomScroller;
-using _game.Scripts.UI.UiControllers;
 using UnityEngine;
 
 namespace _game.Scripts.UI.ProductionMenu
@@ -27,6 +26,11 @@ namespace _game.Scripts.UI.ProductionMenu
         {
             var selection = m_customScroller.GetSelectionAs<ProductionScrollerData>();
             _onSelectionUpdate?.Invoke(selection);
+        }
+
+        public void ClearSelection()
+        {
+            m_customScroller.ClearSelection();
         }
 
         public ProductionScrollerData GetSelection()

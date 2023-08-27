@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using _game.Packages.CustomScroller;
 using _game.Scripts.Core;
 using _game.Scripts.GridComponents;
+using _game.Scripts.Interfaces;
+using _game.Scripts.ProductionObjects;
 using _game.Scripts.UI.ProductionMenu;
 using UnityEngine;
 
@@ -25,9 +27,34 @@ namespace _game.Scripts.UI.UiControllers
 
         public void Refresh()
         {
-            m_gridManager.SpawnGrid(GetSelection);
+            m_gridManager.SpawnGrid(GetSelection, OnCellClick);
             m_productionPaneController.Initialize(_scrollData, OnSelectionUpdate);
             m_informationPaneController.Initialize(null);
+        }
+
+        private void OnCellClick(GridCell gridCell)
+        {
+            var selection = GetSelection();
+            if (!gridCell.IsFilled())
+            {
+                m_informationPaneController.Initialize(null);
+            }
+            else if (selection == null && gridCell.IsFilled())
+            {
+                //TODO get rid of from type checks to improve scalability
+                var gridObject = gridCell.GetGridObject();
+                var type = gridObject.GetType();
+                if (type == typeof(Barracks))
+                {
+                    var barracks = (Barracks)gridObject;
+                    m_informationPaneController.Initialize(barracks.GetProductionData());
+                }
+                else if (type == typeof(PowerPlant))
+                {
+                    var powerPlant = (PowerPlant)gridObject;
+                    m_informationPaneController.Initialize(powerPlant.GetProductionData());
+                }
+            }
         }
 
         private void OnSelectionUpdate(ProductionScrollerData productionScrollerData)
@@ -39,11 +66,5 @@ namespace _game.Scripts.UI.UiControllers
         {
             return m_productionPaneController.GetSelection();
         }
-    }
-
-    public interface IProductionSelection
-    {
-        Vector2 GetDimensions();
-        void PlaceObject();
     }
 }

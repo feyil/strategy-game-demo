@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using _game.Scripts.UI.UiControllers;
+using _game.Scripts.Interfaces;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -14,11 +14,13 @@ namespace _game.Scripts.GridComponents
 
         private Dictionary<string, GridCell> _currentGrid;
         private Func<IProductionSelection> _getSelection;
+        private Action<GridCell> _onCellClick;
 
         [Button]
-        public void SpawnGrid(Func<IProductionSelection> getSelection)
+        public void SpawnGrid(Func<IProductionSelection> getSelection, Action<GridCell> onCellClick)
         {
             _getSelection = getSelection;
+            _onCellClick = onCellClick;
 
             CleanUp();
             SpawnGrid(m_container);
@@ -115,13 +117,19 @@ namespace _game.Scripts.GridComponents
             {
                 PlaceObject(regionCells);
             }
+            
+            _onCellClick?.Invoke(gridCell);
         }
 
         private void PlaceObject(GridCell[] regionCells)
         {
+            var selection = _getSelection?.Invoke();
+            if (selection == null) return;
+            
+            var gridObject = selection.CreateGridObject(regionCells);
             foreach (var regionCell in regionCells)
             {
-                regionCell.Fill();
+                regionCell.Fill(gridObject);
             }
         }
 
