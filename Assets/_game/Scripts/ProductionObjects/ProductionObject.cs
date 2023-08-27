@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using _game.Scripts.Data;
 using _game.Scripts.GridComponents;
 using _game.Scripts.Interfaces;
+using DG.Tweening;
 using UnityEngine;
 
 namespace _game.Scripts.ProductionObjects
@@ -32,11 +33,28 @@ namespace _game.Scripts.ProductionObjects
             {
                 Destroy();
                 _currentHealth = 0;
+                return;
             }
-            else
+
+            _currentHealth -= damage;
+            DummyHitAnim();
+        }
+
+        private void DummyHitAnim()
+        {
+            foreach (var regionCell in _regionCells)
             {
-                _currentHealth -= damage;
+                regionCell.SetColor(Color.red);
             }
+
+            DOVirtual.DelayedCall(0.1f, () =>
+            {
+                if (_currentHealth <= 0) return;
+                foreach (var regionCell in _regionCells)
+                {
+                    regionCell.SetColor(Color.blue);
+                }
+            });
         }
 
         public float GetHealth()

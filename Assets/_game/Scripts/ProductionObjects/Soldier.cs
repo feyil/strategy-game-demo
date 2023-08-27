@@ -59,6 +59,7 @@ namespace _game.Scripts.ProductionObjects
 
         private IEnumerator Attack(IGridObject target)
         {
+            if (target == null) yield break;
             while (target.GetHealth() > 0)
             {
                 target.Hit(_productionUnitData.Damage);
