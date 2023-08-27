@@ -54,7 +54,7 @@ namespace _game.Scripts.ProductionObjects
             var soliderTypeIndex = Random.Range(0, _productionData.ProductionUnitDataArray.Length);
             var soldierType = _productionData.ProductionUnitDataArray[soliderTypeIndex];
             var soldier =
-                new Soldier(soldierType
+                new Soldier(_gridManager, soldierType
                     , cell);
             cell.FillSpecific(soldier, soldierType.Color);
         }

@@ -15,6 +15,7 @@ namespace _game.Scripts.GridComponents
         private Dictionary<string, GridCell> _currentGrid;
         private Func<IProductionSelection> _getSelection;
         private Action<GridCell, int> _onCellClick;
+        private Vector2Int _dimension;
 
         [Button]
         public void SpawnGrid(Func<IProductionSelection> getSelection, Action<GridCell, int> onCellClick)
@@ -23,7 +24,7 @@ namespace _game.Scripts.GridComponents
             _onCellClick = onCellClick;
 
             CleanUp();
-            SpawnGrid(m_container);
+            _dimension = SpawnGrid(m_container);
         }
 
         private Vector2 GetSelectionDimensions()
@@ -34,7 +35,7 @@ namespace _game.Scripts.GridComponents
             return selection.GetDimensions();
         }
 
-        private void SpawnGrid(RectTransform contentArea)
+        private Vector2Int SpawnGrid(RectTransform contentArea)
         {
             _currentGrid = new Dictionary<string, GridCell>();
 
@@ -70,6 +71,8 @@ namespace _game.Scripts.GridComponents
                     _currentGrid.Add(index, gridCell);
                 }
             }
+
+            return new Vector2Int(rowCount, columnCount);
         }
 
         [Button]
@@ -187,6 +190,11 @@ namespace _game.Scripts.GridComponents
             }
 
             return true;
+        }
+
+        public Vector2Int GetDimension()
+        {
+            return _dimension;
         }
     }
 }

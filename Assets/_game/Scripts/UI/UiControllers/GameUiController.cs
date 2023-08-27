@@ -54,6 +54,7 @@ namespace _game.Scripts.UI.UiControllers
             if (_selectedSoldier != null && !gridCell.IsFilled())
             {
                 _selectedSoldier.Move(gridCell);
+                ResetSoldierSelection();
             }
         }
 
