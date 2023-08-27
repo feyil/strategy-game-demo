@@ -1,5 +1,6 @@
 using System;
 using _game.Packages.CustomScroller;
+using _game.Scripts.Data;
 using UnityEngine;
 
 namespace _game.Scripts.UI.ProductionMenu
@@ -7,7 +8,7 @@ namespace _game.Scripts.UI.ProductionMenu
     [Serializable]
     public class ProductionScrollerData : ICustomScrollerData
     {
-        public Sprite ProductionSprite;
+        public ProductionData ProductionData;
 
         private bool _isSelected;
         private event Action<ICustomScrollerData> _onSelected;

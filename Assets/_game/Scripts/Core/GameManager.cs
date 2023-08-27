@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using _game.Packages.CustomScroller;
+using _game.Scripts.Data;
 using _game.Scripts.UI.ProductionMenu;
 using _game.Scripts.UI.UiControllers;
 using Sirenix.OdinInspector;
@@ -10,6 +11,8 @@ namespace _game.Scripts.Core
 {
     public class GameManager : MonoBehaviour
     {
+        [SerializeField] private ProductionDataSO m_productionDataSo;
+
         private void Awake()
         {
             InitializeAwake();
@@ -34,24 +37,31 @@ namespace _game.Scripts.Core
         private IEnumerator StartGame()
         {
             yield return new WaitForEndOfFrame();
-            UiManager.Get<GameUiController>().Show(new List<ICustomScrollerData>()
-            {
-                new ProductionScrollerData()
-                {
-                },
-                new ProductionScrollerData()
-                {
-                },
-                new ProductionScrollerData()
-                {
-                }
-            });
+
+            var generateScrollData = GenerateProductionScrollData();
+            UiManager.Get<GameUiController>().Show(generateScrollData);
         }
 
         [Button]
         private void RestartGame()
         {
             UiManager.Get<GameUiController>().Refresh();
+        }
+
+        private List<ICustomScrollerData> GenerateProductionScrollData()
+        {
+            var scrollData = new List<ICustomScrollerData>();
+
+            var productionDataArray = m_productionDataSo.ProductionDataArray;
+            foreach (var productionData in productionDataArray)
+            {
+                scrollData.Add(new ProductionScrollerData()
+                {
+                    ProductionData = productionData
+                });
+            }
+
+            return scrollData;
         }
     }
 }

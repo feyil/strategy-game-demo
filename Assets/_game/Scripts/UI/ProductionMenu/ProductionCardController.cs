@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace _game.Scripts.UI.ProductionMenu
@@ -17,7 +18,14 @@ namespace _game.Scripts.UI.ProductionMenu
 
         private void Refresh()
         {
-            m_productionCardView.Render(_scrollerData.ProductionSprite, _scrollerData.IsSelectedScroller(), OnClick);
+            var productionData = _scrollerData.ProductionData;
+            if (productionData == null)
+            {
+                Debug.LogException(new Exception("Production Data is NULL"));
+                return;
+            }
+            
+            m_productionCardView.Render(_scrollerData.ProductionData.Image, _scrollerData.IsSelectedScroller(), OnClick);
         }
 
         private void OnClick()
