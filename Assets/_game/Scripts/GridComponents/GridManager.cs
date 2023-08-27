@@ -117,7 +117,7 @@ namespace _game.Scripts.GridComponents
             {
                 PlaceObject(regionCells);
             }
-            
+
             _onCellClick?.Invoke(gridCell);
         }
 
@@ -125,12 +125,17 @@ namespace _game.Scripts.GridComponents
         {
             var selection = _getSelection?.Invoke();
             if (selection == null) return;
-            
-            var gridObject = selection.CreateGridObject(regionCells);
+
+            var gridObject = selection.CreateGridObject(this, regionCells);
             foreach (var regionCell in regionCells)
             {
                 regionCell.Fill(gridObject);
             }
+        }
+
+        public GridCell GetCell(Vector2 cord)
+        {
+            return GetCell(cord.x, cord.y);
         }
 
         private GridCell GetCell(float x, float y)

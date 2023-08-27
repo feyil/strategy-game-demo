@@ -43,14 +43,14 @@ namespace _game.Scripts.UI.ProductionMenu
             return ProductionData.Dimension;
         }
 
-        public IGridObject CreateGridObject(GridCell[] regionCells)
+        public IGridObject CreateGridObject(GridManager gridManager, GridCell[] regionCells)
         {
             switch (ProductionData.Id)
             {
                 case "barracks":
-                    return new Barracks(ProductionData, regionCells);
+                    return new Barracks(gridManager, ProductionData, regionCells);
                 case "power_plant":
-                    return new PowerPlant(ProductionData, regionCells);
+                    return new PowerPlant(gridManager, ProductionData, regionCells);
             }
 
             return null;

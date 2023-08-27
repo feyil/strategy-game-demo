@@ -1,21 +1,12 @@
 using _game.Scripts.Data;
 using _game.Scripts.GridComponents;
-using _game.Scripts.Interfaces;
 
 namespace _game.Scripts.ProductionObjects
 {
-    public class PowerPlant : IGridObject
+    public class PowerPlant : ProductionObject
     {
-        private readonly ProductionData _productionData;
-
-        public PowerPlant(ProductionData productionData, GridCell[] regionCells)
+        public PowerPlant(GridManager gridManager, ProductionData productionData, GridCell[] regionCells) : base(gridManager, productionData, regionCells)
         {
-            _productionData = productionData;
-        }
-
-        public ProductionData GetProductionData()
-        {
-            return _productionData;
         }
     }
 }

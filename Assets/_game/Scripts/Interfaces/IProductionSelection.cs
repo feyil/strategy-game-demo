@@ -6,6 +6,6 @@ namespace _game.Scripts.Interfaces
     public interface IProductionSelection
     {
         Vector2 GetDimensions();
-        IGridObject CreateGridObject(GridCell[] regionCells);
+        IGridObject CreateGridObject(GridManager gridManager, GridCell[] regionCells);
     }
 }

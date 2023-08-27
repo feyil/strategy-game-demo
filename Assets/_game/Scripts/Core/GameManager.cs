@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace _game.Scripts.Core
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : MonoSingleton<GameManager>
     {
         [SerializeField] private ProductionDataSO m_productionDataSo;
 

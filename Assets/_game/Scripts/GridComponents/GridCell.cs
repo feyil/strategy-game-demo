@@ -28,7 +28,7 @@ namespace _game.Scripts.GridComponents
         {
             return $"x_{x}_y_{y}";
         }
-
+        
         [Button]
         public Vector2 GetSize()
         {
@@ -50,9 +50,22 @@ namespace _game.Scripts.GridComponents
         {
             return _gridObject != null;
         }
+ 
+        public void FillSpecific(IGridObject gridObject, Color color)
+        {
+            _gridObject = gridObject;
+            SetColor(color);
+        }
 
         public void Fill(IGridObject gridObject)
         {
+            if (gridObject == null)
+            {
+                _gridObject = null;
+                SetColor(Color.white);
+                return;
+            }
+            
             _gridObject = gridObject;
             SetColor(Color.blue);
         }

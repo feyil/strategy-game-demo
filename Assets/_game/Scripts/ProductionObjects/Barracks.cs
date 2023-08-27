@@ -1,21 +1,61 @@
+using System;
+using System.Collections;
+using _game.Scripts.Core;
 using _game.Scripts.Data;
 using _game.Scripts.GridComponents;
-using _game.Scripts.Interfaces;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace _game.Scripts.ProductionObjects
 {
-    public class Barracks : IGridObject
+    [Serializable]
+    public class Barracks : ProductionObject
     {
-        private readonly ProductionData _productionData;
+        private WaitForSeconds _waitForSeconds = new(3f);
+        private Coroutine _spawner;
 
-        public Barracks(ProductionData productionData, GridCell[] regionCells)
+        public Barracks(GridManager gridManager, ProductionData productionData, GridCell[] regionCells) : base(
+            gridManager, productionData, regionCells)
         {
-            _productionData = productionData;
+            StartSpawningSoldiers();
         }
 
-        public ProductionData GetProductionData()
+        private void StartSpawningSoldiers()
         {
-            return _productionData;
+            _spawner = GameManager.Instance.StartCoroutine(SpawnCoroutine());
+        }
+
+        private IEnumerator SpawnCoroutine()
+        {
+            while (true)
+            {
+                yield return _waitForSeconds;
+                SpawnSoldier();
+            }
+        }
+
+        public override void Destroy()
+        {
+            if (_spawner != null)
+            {
+                GameManager.Instance.StopCoroutine(SpawnCoroutine());
+                _spawner = null;
+            }
+
+            base.Destroy();
+        }
+
+        private void SpawnSoldier()
+        {
+            var spawnCells = GetAvailableSpawnCells();
+            if (spawnCells.Count == 0) return;
+
+            var cell = spawnCells[Random.Range(0, spawnCells.Count)];
+            var soldier =
+                new Soldier(
+                    _productionData.ProductionUnitDataArray[
+                        Random.Range(0, _productionData.ProductionUnitDataArray.Length)], cell);
+            cell.FillSpecific(soldier, Color.magenta);
         }
     }
 }
