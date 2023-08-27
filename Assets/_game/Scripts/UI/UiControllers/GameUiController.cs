@@ -11,17 +11,39 @@ namespace _game.Scripts.UI.UiControllers
     {
         [SerializeField] private GridManager m_gridManager;
         [SerializeField] private ProductionPaneController m_productionPaneController;
+        [SerializeField] private InformationPaneController m_informationPaneController;
+
+        private List<ICustomScrollerData> _scrollData;
 
         public void Show(List<ICustomScrollerData> scrollData)
         {
-            m_gridManager.SpawnGrid();
-            m_productionPaneController.Initialize(scrollData);
+            _scrollData = scrollData;
+            Refresh();
+
             base.Show();
         }
 
         public void Refresh()
         {
-            m_gridManager.SpawnGrid();
+            m_gridManager.SpawnGrid(GetSelection);
+            m_productionPaneController.Initialize(_scrollData, OnSelectionUpdate);
+            m_informationPaneController.Initialize(null);
         }
+
+        private void OnSelectionUpdate(ProductionScrollerData productionScrollerData)
+        {
+            m_informationPaneController.Initialize(productionScrollerData?.ProductionData);
+        }
+
+        private IProductionSelection GetSelection()
+        {
+            return m_productionPaneController.GetSelection();
+        }
+    }
+
+    public interface IProductionSelection
+    {
+        Vector2 GetDimensions();
+        void PlaceObject();
     }
 }

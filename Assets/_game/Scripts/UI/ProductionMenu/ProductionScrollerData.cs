@@ -1,12 +1,13 @@
 using System;
 using _game.Packages.CustomScroller;
 using _game.Scripts.Data;
+using _game.Scripts.UI.UiControllers;
 using UnityEngine;
 
 namespace _game.Scripts.UI.ProductionMenu
 {
     [Serializable]
-    public class ProductionScrollerData : ICustomScrollerData
+    public class ProductionScrollerData : ICustomScrollerData, IProductionSelection
     {
         public ProductionData ProductionData;
 
@@ -33,6 +34,16 @@ namespace _game.Scripts.UI.ProductionMenu
         {
             _onSelected -= listener;
             _onSelected += listener;
+        }
+
+        public Vector2 GetDimensions()
+        {
+            return ProductionData.Dimension;
+        }
+
+        public void PlaceObject()
+        {
+            
         }
     }
 }

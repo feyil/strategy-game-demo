@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using _game.Scripts.UI.UiControllers;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -6,19 +8,28 @@ namespace _game.Scripts.GridComponents
 {
     public class GridManager : MonoBehaviour
     {
-        [SerializeField] private Vector2 m_selectionSize;
-
         [SerializeField] private RectTransform m_container;
         [SerializeField] private Vector2 m_spacing;
         [SerializeField] private GridCell m_gridCellPrefab;
 
         private Dictionary<string, GridCell> _currentGrid;
+        private Func<IProductionSelection> _getSelection;
 
         [Button]
-        public void SpawnGrid()
+        public void SpawnGrid(Func<IProductionSelection> getSelection)
         {
+            _getSelection = getSelection;
+
             CleanUp();
             SpawnGrid(m_container);
+        }
+
+        private Vector2 GetSelectionDimensions()
+        {
+            var selection = _getSelection?.Invoke();
+            if (selection == null) return Vector2.zero;
+
+            return selection.GetDimensions();
         }
 
         private void SpawnGrid(RectTransform contentArea)
@@ -74,7 +85,7 @@ namespace _game.Scripts.GridComponents
         {
             var startCord = gridCell.GetCord();
 
-            var regionCells = GetRegionCells(startCord, m_selectionSize);
+            var regionCells = GetRegionCells(startCord, GetSelectionDimensions());
             var isAvailable = IsAvailable(regionCells);
             if (isAvailable)
             {
@@ -90,7 +101,7 @@ namespace _game.Scripts.GridComponents
         {
             var startCord = gridCell.GetCord();
 
-            var regionCells = GetRegionCells(startCord, m_selectionSize);
+            var regionCells = GetRegionCells(startCord, GetSelectionDimensions());
             ColorARegion(regionCells, Color.white);
         }
 
@@ -98,7 +109,7 @@ namespace _game.Scripts.GridComponents
         {
             var startCord = gridCell.GetCord();
 
-            var regionCells = GetRegionCells(startCord, m_selectionSize);
+            var regionCells = GetRegionCells(startCord, GetSelectionDimensions());
             var isAvailable = IsAvailable(regionCells);
             if (isAvailable)
             {

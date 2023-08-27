@@ -13,6 +13,8 @@ namespace _game.Packages.CustomScroller
         public event Action<int> OnCellViewChange;
         public event Action OnInitialized;
 
+        public event Action<ICustomScrollerData> OnSelectionUpdated;
+
         [SerializeField] private EnhancedScroller EnhanceScroller;
         [SerializeField] private bool m_isMultipleSelection;
 
@@ -102,10 +104,20 @@ namespace _game.Packages.CustomScroller
         {
             if (m_isMultipleSelection) return;
 
-            if (data.IsSelectedScroller() && _selected != data)
+            var selected = _selected;
+            if (_selected == data && !data.IsSelectedScroller())
+            {
+                _selected = null;
+            }
+            else if (data.IsSelectedScroller() && _selected != data)
             {
                 _selected?.SelectScroller(false);
                 _selected = data;
+            }
+
+            if (selected != _selected)
+            {
+                OnSelectionUpdated?.Invoke(_selected);
             }
         }
 
