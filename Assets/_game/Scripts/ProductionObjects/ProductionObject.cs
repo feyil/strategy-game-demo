@@ -39,6 +39,11 @@ namespace _game.Scripts.ProductionObjects
             }
         }
 
+        public float GetHealth()
+        {
+            return _currentHealth;
+        }
+
         public void Move(GridCell gridCell)
         {
         }

@@ -51,7 +51,7 @@ namespace _game.Scripts.UI.UiControllers
 
         private void OnRightButtonClick(GridCell gridCell)
         {
-            if (_selectedSoldier != null && !gridCell.IsFilled())
+            if (_selectedSoldier != null)
             {
                 _selectedSoldier.Move(gridCell);
                 ResetSoldierSelection();

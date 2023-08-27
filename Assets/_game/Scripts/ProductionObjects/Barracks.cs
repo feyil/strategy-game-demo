@@ -38,7 +38,7 @@ namespace _game.Scripts.ProductionObjects
         {
             if (_spawner != null)
             {
-                GameManager.Instance.StopCoroutine(SpawnCoroutine());
+                GameManager.Instance.StopCoroutine(_spawner);
                 _spawner = null;
             }
 
