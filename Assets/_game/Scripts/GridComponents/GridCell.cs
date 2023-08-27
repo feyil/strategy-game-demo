@@ -87,10 +87,7 @@ namespace _game.Scripts.GridComponents
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (eventData.button == PointerEventData.InputButton.Left)
-            {
-                _gridCellEvents.OnCellClick?.Invoke(this);    
-            }
+            _gridCellEvents.OnCellClick?.Invoke(this, (int)eventData.button);
         }
 
         public IGridObject GetGridObject()

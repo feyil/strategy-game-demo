@@ -14,10 +14,10 @@ namespace _game.Scripts.GridComponents
 
         private Dictionary<string, GridCell> _currentGrid;
         private Func<IProductionSelection> _getSelection;
-        private Action<GridCell> _onCellClick;
+        private Action<GridCell, int> _onCellClick;
 
         [Button]
-        public void SpawnGrid(Func<IProductionSelection> getSelection, Action<GridCell> onCellClick)
+        public void SpawnGrid(Func<IProductionSelection> getSelection, Action<GridCell, int> onCellClick)
         {
             _getSelection = getSelection;
             _onCellClick = onCellClick;
@@ -107,7 +107,7 @@ namespace _game.Scripts.GridComponents
             ColorARegion(regionCells, Color.white);
         }
 
-        private void OnCellClick(GridCell gridCell)
+        private void OnCellClick(GridCell gridCell, int button)
         {
             var startCord = gridCell.GetCord();
 
@@ -118,7 +118,7 @@ namespace _game.Scripts.GridComponents
                 PlaceObject(regionCells);
             }
 
-            _onCellClick?.Invoke(gridCell);
+            _onCellClick?.Invoke(gridCell, button);
         }
 
         private void PlaceObject(GridCell[] regionCells)
