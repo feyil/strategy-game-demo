@@ -1,10 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using _game.Scripts.UI;
+using _game.Packages.CustomScroller;
+using _game.Scripts.UI.ProductionMenu;
+using _game.Scripts.UI.UiControllers;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace _game.Scripts.Core
 {
@@ -34,7 +34,18 @@ namespace _game.Scripts.Core
         private IEnumerator StartGame()
         {
             yield return new WaitForEndOfFrame();
-            UiManager.Get<GameUiController>().Show();
+            UiManager.Get<GameUiController>().Show(new List<ICustomScrollerData>()
+            {
+                new ProductionScrollerData()
+                {
+                },
+                new ProductionScrollerData()
+                {
+                },
+                new ProductionScrollerData()
+                {
+                }
+            });
         }
 
         [Button]
